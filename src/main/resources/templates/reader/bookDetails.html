@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Admin-首页</title>
+
+    <!-- Bootstrap -->
+    <!--<link href="" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">-->
+    <link href="${APP_PATH}/static/main/assets/bootstrap/css/bootstrap.min.css" th:href="@{/assets/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="" th:href="@{/assets/bootstrap-daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/css/common.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/css/main.css}">
+
+
+
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <script src="$" th:src="@{/assets/js/myCommon.js}"></script>
+    <link href="https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+
+
+    </style>
+</head>
+<body>
+
+<div th:replace="commons/bar::reader_nav"></div>
+
+<div class="wrapper">
+    <div th:replace="commons/bar::reader_aside"></div>
+
+    <div class="main-container">
+        <div class="padding">
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0);" th:href="@{/reader/main.html}" id="firstpage_a">首页</a>
+                <li>书籍借阅</li>
+                <li class="active">书籍列表</li>
+            </ol>
+            <div class="box">
+                <div class="heading">
+                    <p class="title" style="font-size: 25px;font-weight: bold;">
+                        书籍列表
+                    </p>
+
+                </div>
+
+                <div class="box-inner">
+                    <div>
+                        <button id="alterUserInfo_btn" type="button" class="btn btn-default"
+                                data-toggle="tooltip" data-placement="right"
+                                style="font-size:15px;border: solid 1px"
+                                onclick="javascript:history.go(-1);">
+                            <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+                            返回
+                        </button>
+                    </div>
+
+                    <div  class="col-md-8 col-md-offset-2" style="margin-top: 30px;margin-bottom: 100px">
+                        <table id="userinfo_table" class="table table-hover table-bordered table-striped"
+                               style="font-size: 15px;border: solid 1px">
+
+                            <tr>
+                                <td style="width: 30%">编号</td>
+                                <td th:text="${session.book.bookId}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">书籍名</td>
+                                <td th:text="${session.book.bookName}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">书籍类别</td>
+                                <td th:text="${session.book.bookstyle.bookstyleName}"> </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">作者</td>
+                                <td th:text="${session.book.bookAuthor}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">出版社</td>
+                                <td th:text="${session.book.bookPub}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">出版时间</td>
+                                <td th:text="${#dates.format(session.book.bookUpdate, 'yyyy-MM-dd')}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">价格</td>
+                                <td th:text="${session.book.bookPrice}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">存放位置</td>
+                                <td th:text="${session.book.bookLocation}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">库存</td>
+                                <td th:text="${session.book.bookNum}"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30%">书籍描述</td>
+                                <td th:text="${session.book.bookDescription}"></td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="commons/bar::footer"></div>
+</div>
+
+
+
+<div class="scroll-to-top"><i class="fa fa-chevron-up fa-lg"></i></div>
+
+<script src="" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+<script src="" th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+<script src="" th:src="@{/assets/bootstrap-daterangepicker/moment.min.js}"></script>
+<script src="" th:src="@{/assets/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<script src="" th:src="@{/assets/js/main.js}"></script>
+<script src="https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
+
+<script th:inline="javascript">
+
+
+</script>
+</body>
+</html>

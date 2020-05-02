@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mywork.springboot.mapper.BorrowRecordMapper">
+
+    <sql id="BookRecord_col">
+       br.record_id,br.reader_id,br.borrow_date,br.should_return_date,br.return_status,
+       b.book_id,b.book_name,b.book_author,b.book_pub
+    </sql>
+    <resultMap id="BorrowRecordResultMap" type="BorrowRecord">
+        <id column="record_id" jdbcType="INTEGER" property="recordId"/>
+        <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+        <result column="borrow_date" jdbcType="TIMESTAMP" property="borrowDate" />
+        <result column="should_return_date" jdbcType="TIMESTAMP" property="shouldReturnDate" />
+        <result column="return_status" jdbcType="INTEGER" property="ReturnStatus" />
+
+        <association property="book" javaType="Book">
+            <id column="book_id" jdbcType="INTEGER" property="bookId"/>
+            <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+            <result column="book_author" jdbcType="VARCHAR" property="bookAuthor" />
+            <result column="book_pub" jdbcType="VARCHAR" property="bookPub" />
+            <!--<result column="book_location" jdbcType="VARCHAR" property="bookLocation" />-->
+            <!--<result column="book_description" jdbcType="VARCHAR" property="bookDescription" />-->
+            <!--<result column="book_price" jdbcType="DOUBLE" property="bookPrice" />-->
+            <!--<result column="book_num" jdbcType="INTEGER" property="bookNum" />-->
+            <!--<result column="book_update" jdbcType="DATE" property="bookUpdate" />-->
+
+        </association>
+    </resultMap>
+
+    <!--按条id查询所有借书记录-->
+    <select id="selAllRecordByReaderId"  resultMap="BorrowRecordResultMap">
+        select
+        <include refid="BookRecord_col" />
+        from borrow_record br left join book b on b.book_id=br.book_id
+        where br.status=1
+        <if test="record.returnStatus != '' and record.returnStatus != null">and br.return_status = 0</if>
+        <if test="reader.readerId != '' and reader.readerId != null">and br.reader_id = #{reader.readerId}</if>
+        <if test="record.bookId != '' and record.bookId != null">and br.book_id = #{record.bookId}</if>
+
+
+    </select>
+
+
+</mapper>

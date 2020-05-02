@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Admin-首页</title>
+
+    <!-- Bootstrap -->
+    <!--<link href="" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">-->
+    <link href="${APP_PATH}/static/main/assets/bootstrap/css/bootstrap.min.css" th:href="@{/assets/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="" th:href="@{/assets/bootstrap-daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/css/common.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/css/main.css}">
+
+
+
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <script src="$" th:src="@{/assets/js/myCommon.js}"></script>
+    <link href="https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+
+
+    </style>
+</head>
+<body>
+
+<div th:replace="commons/bar::manager_nav"></div>
+
+<div class="wrapper">
+    <div th:replace="commons/bar::manager_aside"></div>
+
+    <div class="main-container">
+        <div class="padding">
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0);" th:href="@{/manager/main.html}" id="firstpage_a">首页</a>
+                <li>书籍管理</li>
+                <li class="active">书籍列表</li>
+            </ol>
+            <div class="box">
+                <div class="heading">
+                    <p class="title" style="font-size: 25px;font-weight: bold;">
+                        书籍列表
+                    </p>
+
+                </div>
+
+                <div class="box-inner">
+                    <form id="search_form" class="form-search " role="form">
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="sr-only">书籍名</label>
+                                <input type="text" name="bookName" class="form-control" placeholder="按书籍名搜索">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="sr-only">作者</label>
+                                <input type="text" name="bookAuthor" class="form-control" placeholder="按作者搜索">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="sr-only">出版社</label>
+                                <input type="text" name="bookPub" class="form-control" placeholder="按出版社搜索">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 col-sm-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="sr-only">书籍类别</label>
+                                <select id="bookstyle_select" class="form-control" name="bookstyleId">
+                                    <!--<option value="">&#45;&#45;按书籍类别搜索&#45;&#45;</option>-->
+                                </select>
+                            </div>
+                        </div>
+
+                        <button id="search_btn" type="button" class="btn btn-primary pull-right btn-search">搜索</button>
+                    </form>
+
+                    <div class="table-responsive" style="margin-top: 20px;">
+                        <table id="book_table" class="table table-striped table-bordered table-hover" style="margin-top: 10px">
+                            <thead>
+                            <tr>
+                                <th>书籍编号</th>
+                                <th>书籍名</th>
+                                <th>书籍类别</th>
+                                <th>作者</th>
+                                <th>出版社</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div id="page_info_area" style="margin-top: 25px" class="col-md-6">
+
+                        </div>
+
+                        <div id="page_nav_area" style=";" class="col-md-6">
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="commons/bar::footer"></div>
+</div>
+
+<div class="modal fade" id="bookDetailsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:50%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">书籍详细信息</h4>
+            </div>
+            <div class="modal-body" style="padding: 5% 10%">
+                <table id="bookDetails_table" class="table table-hover table-bordered table-striped"
+                       style="font-size: 15px;border: solid 1px">
+
+
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="scroll-to-top"><i class="fa fa-chevron-up fa-lg"></i></div>
+
+<script src="" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+<script src="" th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+<script src="" th:src="@{/assets/bootstrap-daterangepicker/moment.min.js}"></script>
+<script src="" th:src="@{/assets/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<script src="" th:src="@{/assets/js/main.js}"></script>
+<script src="https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
+
+<script th:inline="javascript">
+    var root = /*[[@{/}]]*/ "/";
+
+    $(function () {
+        reset_form("#search_form");
+
+        //获取所有专业显示在下拉框中
+        var url_gbs = /*[[@{/get_allBookstyle}]]*/ "";
+        get_allBookstyle("#bookstyle_select",url_gbs);
+
+        to_page(1);
+    });
+
+
+    function to_page(pn) {
+        var data = "pn="+pn+"&"+$("#search_form").serialize();
+        var url = /*[[@{/get_allBook}]]*/ "";
+        $.ajax({
+            url: url,
+            data: data,
+            type:"GET",
+            success:function (result) {
+            //    console.log(result);
+
+                build_bookList_table(result);
+
+                build_page_info(result,"#page_info_area");
+
+                build_page_nav(result,"#page_nav_area");
+            }
+        });
+
+    }
+
+    function build_bookList_table(result) {
+
+            //清空表格数据
+            $("#book_table tbody").empty();
+            // alert(11);
+
+            var books = result.extend.pageInfo.list;
+            $.each(books,function (index,item) {
+
+                var bookIdTd = $("<td></td>").append(item.bookId);
+                var bookNameTd = $("<td></td>").append(item.bookName);
+                var bookAuthorTd = $("<td></td>").append(item.bookAuthor);
+                var bookPubTd = $("<td></td>").append(item.bookPub);
+                var bookstyleTd = $("<td></td>").append(item.bookstyle.bookstyleName);
+
+                var bookDetailsBtn = $("<button style='margin-left:20px'></button>")
+                    .addClass("btn btn-default btn-sm bookDetails_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-book").append("详细信息"));
+                bookDetailsBtn.attr("bookId",item.bookId);
+
+                var deleteBtn = $("<button style='margin-left:20px'></button>")
+                    .addClass("btn btn-danger btn-sm delete_btn")
+                    .append($("<span></span>").addClass("glyphicon glyphicon-trash").append("删除"));
+
+                deleteBtn.attr("bookId",item.bookId);
+
+                var btnTd = $("<td ></td>").append(bookDetailsBtn).append(deleteBtn);
+
+                $("<tr></tr>")
+                    .append(bookIdTd)
+                    .append(bookNameTd)
+                    .append(bookstyleTd)
+                    .append(bookAuthorTd)
+                    .append(bookPubTd)
+                    .append(btnTd)
+                    .appendTo("#book_table tbody");
+
+            })
+    }
+
+    //点击搜索按钮
+    $("#search_btn").click(function () {
+        to_page(1);
+    })
+
+    $(document).on("click",".bookDetails_btn",function () {
+
+        window.location.href=root+"bookDetails.html?bookId=" + $(this).attr("bookId");
+    })
+
+
+    //点击删除按钮
+    $(document).on("click",".delete_btn",function () {
+        var bookId = $(this).attr("bookId");
+
+        $.confirm({
+            title: '确认信息',
+            content: '确认删除书籍'+bookId+'吗？',
+            buttons: {
+                ok: {
+                    text: "确认",
+                    btnClass: 'btn-primary',
+                    keys: ['enter'],
+                    action: function(){
+                        delete_book(bookId);
+                    }
+                },
+                cancel: {
+                    text:"取消",
+                    action: function(){
+                    }
+                }
+            }
+        });
+
+    })
+
+    function delete_book(bookId) {
+        $.ajax({
+            url: root + "delete_book",
+            type: "GET",
+            data: "bookId="+bookId,
+            success:function (result) {
+                if(result.code == 100) {
+                    $.alert({
+                        title: "success",
+                        content: "删除书籍成功！",
+                        type:"green",
+                        buttons: {
+                            ok: {
+                                text: "确认",
+                                btnClass: 'btn-primary',
+                                action: function(){
+                                    window.location.reload();                                }
+                            }
+                        }
+                    })
+                } else {
+                    my_alert("error","删除书籍失败！","red");
+                }
+            }
+        })
+    }
+
+</script>
+</body>
+</html>

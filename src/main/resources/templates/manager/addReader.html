@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simple Admin-首页</title>
+
+    <!-- Bootstrap -->
+    <!--<link href="" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">-->
+    <link href="${APP_PATH}/static/main/assets/bootstrap/css/bootstrap.min.css" th:href="@{/assets/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="" th:href="@{/assets/bootstrap-daterangepicker/daterangepicker.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/font-awesome/css/font-awesome.min.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/css/common.css}">
+    <link rel="stylesheet" href="" th:href="@{/assets/css/main.css}">
+
+
+
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <script src="$" th:src="@{/assets/js/myCommon.js}"></script>
+    <link href="https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.css" rel="stylesheet">
+
+
+    <style type="text/css">
+
+
+    </style>
+</head>
+<body>
+
+<div th:replace="commons/bar::manager_nav"></div>
+
+<div class="wrapper">
+    <div th:replace="commons/bar::manager_aside"></div>
+
+    <div class="main-container">
+        <div class="padding">
+            <ol class="breadcrumb">
+                <li><a href="javascript:void(0);" th:href="@{/manager/main.html}" id="firstpage_a">首页</a>
+                <li>读者管理</li>
+                <li class="active">添加读者</li>
+            </ol>
+            <div class="box">
+                <div class="heading">
+                    <p class="title" style="font-size: 25px;font-weight: bold;">
+                        添加读者
+                    </p>
+
+                </div>
+
+                <div class="box-inner">
+                    <div class="col-md-4 col-md-offset-4" style="margin-bottom: 5%;margin-top: 5%">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading ">
+                                <h3 class="panel-title">添加读者</h3>
+                            </div>
+                            <div class="panel-body">
+                                <form id="add_reader_form" class="form-horizontal">
+                                    <div class="form-group" style="margin-top: 15px">
+                                        <label for="readerName" class="col-sm-3 control-label">用户名</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" id="readerName">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="readerPassword" class="col-sm-3 control-label">密码</label>
+                                        <div class="col-sm-8">
+                                            <input type="password" class="form-control" id="readerPassword">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password" class="col-sm-3 control-label">确认密码</label>
+                                        <div class="col-sm-8">
+                                            <input type="password" class="form-control" id="password">
+                                            <span class="help-block"></span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group" style="margin-top: 20px;">
+                                        <div class="col-sm-offset-3 col-sm-8">
+                                            <button id="add_btn" type="button" class="btn btn-primary"
+                                            style="margin-left: 20%;width: 60%">提交</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div th:replace="commons/bar::footer"></div>
+</div>
+
+
+<div class="scroll-to-top"><i class="fa fa-chevron-up fa-lg"></i></div>
+
+<script src="" th:src="@{/webjars/jquery/3.4.1/jquery.js}"></script>
+<script src="" th:src="@{/assets/bootstrap/js/bootstrap.min.js}"></script>
+<script src="" th:src="@{/assets/bootstrap-daterangepicker/moment.min.js}"></script>
+<script src="" th:src="@{/assets/bootstrap-daterangepicker/daterangepicker.js}"></script>
+<script src="" th:src="@{/assets/js/main.js}"></script>
+<script src="https://cdn.bootcss.com/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
+
+<script th:inline="javascript">
+
+    var root = /*[[@{/}]]*/ "/";
+
+    $(function () {
+        reset_form("#add_reader_form");
+    })
+
+
+    function validate_add_reader_form(){
+
+        var readerName = $("#readerName").val();
+        /*帐号是否合法(字母开头，允许6-16字节，允许字母数字下划线)：^[a-zA-Z][a-zA-Z0-9_]{4,15}$  ^[\u4e00-\u9fa5]{0,}*/
+        var regName = /(^[a-zA-Z0-9_-]{4,16}$)|(^[\u4e00-\u9fa5]{2,5})/;
+        if(!regName.test(readerName)) {
+            //alert("用户名是2-5位中文或者6-16位英文和数字的组合");
+            show_validate_msg("#readerName","error","用户名是2-5位中文或者4-16位英文和数字的组合");
+            return false;
+        } else {
+            show_validate_msg("#readerName","success","");
+        }
+
+        //校验密码
+        var readerPassword = $("#readerPassword").val();
+        var regPassword = /(^[a-zA-Z0-9_-]{6,12}$)/;
+        if(!regPassword.test(readerPassword)){
+            show_validate_msg("#readerPassword","error","密码为6-12位数字字母组合");
+            return false;
+        } else {
+            show_validate_msg("#readerPassword","success","");
+        }
+
+        var password = $("#password").val();
+        if(password != readerPassword) {
+            show_validate_msg("#password","error","两次输入密码不一致");
+            return false;
+        }
+
+        return true;
+    }
+
+    $("#add_btn").click(function () {
+
+        if(!validate_add_reader_form()) {
+            return false;
+        }
+
+        $.confirm({
+            title: '确认信息',
+            content: '确认添加读者用户吗？',
+            buttons: {
+                ok: {
+                    text: "确认",
+                    btnClass: 'btn-primary',
+                    keys: ['enter'],
+                    action: function(){
+                        insert_reader();
+                    }
+                },
+                cancel: {
+                    text:"取消",
+                    action: function(){
+                    }
+                }
+            }
+        });
+
+    })
+
+    //添加用户
+    function insert_reader() {
+        var readerName = $("#readerName").val();
+        var readerPassword = $("#readerPassword").val();
+        $.ajax({
+            url: root+"insert_reader",
+            type:"POST",
+            data: "readerName="+readerName+"&readerPassword="+readerPassword,
+            success:function (result) {
+                if(result.code == 100) {
+                    $.alert({
+                        title: "success",
+                        content: "添加读者用户成功！",
+                        type: "green",
+                        buttons: {
+                            ok: {
+                                text: "确认",
+                                btnClass: 'btn-primary',
+                                action: function(){
+                                    window.location.href= root+"manager/readerList.html";                          }
+                            }
+                        }
+                    })
+
+                } else {
+                    alter("修改密码失败，请重试！");
+                    window.location.reload();
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

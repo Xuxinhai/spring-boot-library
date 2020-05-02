@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mywork.springboot.mapper.ReturnRecordMapper">
+
+    <sql id="BookRecord_col">
+       rr.record_id,rr.reader_id,rr.borrow_date,rr.return_date,
+       b.book_id,b.book_name,b.book_author,b.book_pub
+    </sql>
+    <resultMap id="ReturnRecordResultMap" type="ReturnRecord">
+        <id column="record_id" jdbcType="INTEGER" property="recordId"/>
+        <result column="reader_id" jdbcType="INTEGER" property="readerId"/>
+        <result column="borrow_date" jdbcType="TIMESTAMP" property="borrowDate" />
+        <result column="return_date" jdbcType="TIMESTAMP" property="returnDate" />
+
+        <association property="book" javaType="Book">
+            <id column="book_id" jdbcType="INTEGER" property="bookId"/>
+            <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+            <result column="book_author" jdbcType="VARCHAR" property="bookAuthor" />
+            <result column="book_pub" jdbcType="VARCHAR" property="bookPub" />
+
+        </association>
+    </resultMap>
+
+    <!--按id查询所有还书记录-->
+    <select id="selAllRecordByReader"  resultMap="ReturnRecordResultMap">
+        select
+        <include refid="BookRecord_col" />
+        from return_record rr left join book b on b.book_id=rr.book_id
+        where rr.status=1
+        <if test="reader.readerId != '' and reader.readerId != null">and rr.reader_id = #{reader.readerId}</if>
+        <if test="record.bookId != '' and record.bookId != null">and rr.book_id = #{record.bookId}</if>
+
+    </select>
+
+
+</mapper>

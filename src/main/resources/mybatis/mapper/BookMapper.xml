@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mywork.springboot.mapper.BookMapper">
+
+    <sql id="Book_col">
+     b.book_id,b.book_name,b.book_author,b.book_pub,b.book_description,b.book_price,
+     b.book_location,b.book_update,b.book_num,bs.bookstyle_id,bs.bookstyle_name
+    </sql>
+    <resultMap id="BookResultMap" type="Book">
+        <id column="book_id" jdbcType="INTEGER" property="bookId"/>
+        <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+        <result column="book_author" jdbcType="VARCHAR" property="bookAuthor" />
+        <result column="book_pub" jdbcType="VARCHAR" property="bookPub" />
+        <result column="book_location" jdbcType="VARCHAR" property="bookLocation" />
+        <result column="book_description" jdbcType="VARCHAR" property="bookDescription" />
+        <result column="book_price" jdbcType="DOUBLE" property="bookPrice" />
+        <result column="book_num" jdbcType="INTEGER" property="bookNum" />
+        <result column="book_update" jdbcType="DATE" property="bookUpdate" />
+
+        <association property="bookstyle" javaType="Bookstyle">
+            <id column="bookstyle_id" jdbcType="INTEGER" property="bookstyleId"/>
+            <result column="bookstyle_name" jdbcType="VARCHAR" property="bookstyleName" />
+
+        </association>
+    </resultMap>
+
+    <!--按条件查询所有书籍-->
+    <select id="selAllBook"  resultMap="BookResultMap">
+        select
+        <include refid="Book_col" />
+        from
+        book b left join book_style bs on b.bookstyle_id = bs.bookstyle_id
+        where b.status=1
+        <if test="bookName != '' and bookName != null">and b.book_name like concat('%',#{bookName},'%')</if>
+        <if test="bookAuthor != '' and bookAuthor != null">and b.book_author like concat('%',#{bookAuthor},'%')</if>
+        <if test="bookPub != '' and bookPub != null">and b.book_pub like concat('%',#{bookPub},'%')</if>
+        <if test="bookstyleId != '' and bookstyleId != null">and bs.bookstyle_id = #{bookstyleId}</if>
+
+    </select>
+
+    <!--通过id查找书籍详细信息-->
+    <select id="selBookDetailsById"  resultMap="BookResultMap">
+        select
+        <include refid="Book_col" />
+        from
+        book b left join book_style bs on b.bookstyle_id = bs.bookstyle_id
+        where b.status=1 and b.book_id = #{bookId}
+    </select>
+
+</mapper>
